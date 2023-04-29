@@ -1,0 +1,12 @@
+#For deployment
+prefect deployment run New_Parent_Flow/etl_docker_flows --param month='01' --param year=2019 --param color='yellow'
+
+prefect config set PREFECT_API_URL="http://127.0.0.1:4200/api"
+
+#To start agent
+prefect agent start  --work-queue "default"
+
+#create deployment 
+prefect deployment build ingest_to_gcs.py:parent_flow -n "my_flow"
+
+prefect deployment apply parent_flow-deployment.yaml
